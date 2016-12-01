@@ -1,32 +1,109 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <title>The Daily Star: Notification</title>
-        <script src='js/jquery-2.2.3.min.js'></script>        
-        <style>
-            #tdsnotify {position: relative;z-index: 8888;}
-            .noshow {display: none;}
-            #tdsnotify .bgstyle {width: 100%;height: 100%;position: fixed;left: 0;top: 0;z-index: 1501;background: rgba(0,0,0,.8);opacity: 2;filter: alpha(opacity=2);}
-            #tdsnotify img {position: fixed;left: 318px;z-index: 9999;top: 126px;}
-        </style>
-    </head>
-    <body style="font-family: 'Montserrat', sans-serif;">
-        <div id="msg" style="background-color:#000;color:#FFF;padding:10px;text-align:center;">Processing, please wait....</div>
-        <div style="background-color:gray;color:#fff;position: fixed;top: 50%;left: 50%;z-index:2;width: 290px; box-sizing:border-box; margin-top:-143px;margin-left:-145px;text-align:center;font-size:12px;font-family:Montserrat, sans-serif; padding:10px 10px 10px 10px; border-radius:5px;">
-            <img src='images/tds-logo.png' style="width:100px;border-radius:5px;">
-            <h2 style="font-size:16px; padding: 5px 0px; line-height:20px; font-weight:400;"><span style="font-weight:bold;text-decoration:none; font-size:20px; color:#fff; padding-bottom:10px; display:block; line-height:25px;">Get Breaking News Alerts From The Daily Star</span><span style="font-size:14px;line-height:100%;">We'll send you latest news updates through the day. You can manage them any time from your browser settings.</span> <br><br>Please click "Allow" to Get Started <br><br><span style="cursor:pointer;font-family: Arial;color: #ffffff;font-size: 16px;background: #5a52b7;padding: 5px 5px 5px 5px;text-decoration:underline;" onclick="location.href=document.referrer;return true;">No Thanks</span></h2>
-        </div>
+<body>
+<div id="___tdspushdiv"></div>
+<span id="___tdsspldiv"><style>.topnav2014 .comments{position:relative;}.popover {text-transform:none;font-size: 14px;font-style: normal;font-weight: 400;letter-spacing: normal;background-color: #f64646;border-radius: 6px;box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);max-width: 200px;padding: 1px;left:-90px;top: 40px;position: absolute;z-index: 100060;color:#FFF;width:200px;}.popover-content{cursor:pointer;padding: 10px;text-align:center;font-size: 12px;}.popover > .arrow, .popover > .arrow::after {border-color: transparent;border-style: solid;display: block;height: 0;position: absolute;width: 0;}.popover > .arrow {border-width: 11px;border-bottom-color: #CCC;border-top-width: 0;left: 50%;margin-left: -11px;top: -11px;}.popover > .arrow::after {border-width: 10px;border-bottom-color: #f64646;border-top-width: 0;content: " ";margin-left: -10px;top: 1px;}.fbmsginner{position:relative;padding:14px 5px 20px 0px;}</style><span class="fbmsginner"><a class="break_fbmsg" href="https://alerts.thedailystar.net/?settings=1" title="Breaking News Alerts"><b></b></a><div class="popover" style="display: none;" onclick="this.style.display='none';"><div class="arrow" style="left: 50%;"></div><div class="popover-content"><div style="color:#3410b3;text-align: right;padding-bottom: 5px;">Close [X]</div>You can manage your notification subscription by clicking above bell.</div></div></span></span>
+<script>
+function get_browser_info(){
+    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [],d = 'desktop'; 
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ) {
+        d = 'mobile';
+    }
+    if(/trident/i.test(M[1])){
+        tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
+        return {name:'ie',version:(tem[1]||''),device:d};
+    }   
+    if(M[1]==='Chrome'){
+        tem=ua.match(/\bOPR\/(\d+)/)
+        if(tem!=null)   {return {name:'opera', version:tem[1],device:d};}
+        }
+    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+    return {name: M[0].toLowerCase(),version: M[1],device:d};
+}
 
-        <div id="tdsnotify" class="noshow">
-            <div class="bgstyle"></div>
-            <img id="userinfoimg" src="images/alert-hint.png" height="60" width="211" alt="Please Click on allow">
-        </div>
-        <script src='js/alerts.js'></script>
-        <script>
-            if(browserinfo.name == 'firefox'){document.getElementById('userinfoimg').style.top = '150px'};
-            if(browserinfo.name == 'chrome' && (browserinfo.os == 'linux' || browserinfo.os == 'windows') && browserinfo.device == 'desktop'){document.getElementById('userinfoimg').style.left = '220px'};
-            if(browserinfo.device == 'mobile' && browserinfo.name == 'chrome'){var obj = document.getElementById('userinfoimg');obj.src= 'images/mobile.png';obj.style.bottom = '170px';obj.style.right = '48px';obj.style.top = 'auto';obj.style.left = 'auto';}
-        </script>       
-    </body>
+function setCookieVal(c_name,value,exdays)
+{
+    var current = new Date();
+    var exdate=new Date(current.getTime() + 86400000*exdays);
+    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString() + ';path=/;domain=.thedailystar.net');
+    document.cookie=c_name + "=" + c_value;
+}
+
+function getCookieVal(c_name)
+{
+    var i,x,y,ARRcookies=document.cookie.split(";");
+    for (i=0;i<ARRcookies.length;i++)
+    {
+        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+        x=x.replace(/^\s+|\s+$/g,"");
+        if (x==c_name)
+        {
+            return unescape(y);
+        }
+    }
+    return '';
+}
+var __cname = 'tds_alerts';
+var __matchid = '';
+var __cday = 120;
+var ___page = (typeof __page !== 'undefined')?__page:'';
+
+var browser=get_browser_info();
+if(((browser.name == 'chrome' && browser.version >= 43) || (browser.device != 'mobile' && browser.name == 'firefox' && browser.version >= 44))){
+    var cval = getCookieVal(__cname) || '';
+    if (cval == '') {
+        setTimeout(__showSubscribePopup, ___page=='hp'?17000:3000);
+    }
+    tdsUnsubscribeButton();
+}
+
+function __showSubscribePopup(){
+    var id = document.getElementById('___tdspushdiv');
+    if(id){
+        id.innerHTML = '<style>.noti_bgstyle{width:100%;height:100%;position:fixed;left:0;top:0;z-index:15010000;background:rgba(0,0,0,.8);opacity:.95;filter:alpha(opacity=95)}.noti_wrap{z-index:2147483647;left:50%;top:0;position:fixed;width:400px;margin-left:-200px;box-sizing:border-box;padding:12px;background:#fff;font-family:Roboto,sans-serif;-moz-box-shadow:1px 1px 1px 0 #c9c9c9;-webkit-box-shadow:1px 1px 1px 0 #c9c9c9;box-shadow:1px 1px 1px 0 #c9c9c9;border:1px solid #e8e8e8}.notif_box{display:table;margin-top:10px}.noti_wrap .noti_img{width:65px;height:65px;float:left;margin:0 10px 0 0}.noti_wrap .noti_cont{display:table-cell;vertical-align:top}.noti_wrap .noti_cont h2{font-size:14px;margin:0;font-weight:600;line-height:18px}.noti_wrap .noti_cont .botinfo{font-size:12px;font-weight:400;padding:5px 0;line-height:18px;color:#666}.noti_wrap .noti_btnwrap{text-align:right;padding:10px 0 0;clear:both}.noti_btnwrap a.allow,.noti_btnwrap a.notnow{width:auto;padding:4px 15px;background:#fff;line-height:20px;border:1px solid #ccc;font-size:11px;color:#333;text-decoration:none;text-transform:uppercase;border-radius:3px;margin:0 0 0 10px}.noti_btnwrap a.notnow{border:none;border-radius:none;text-transform:none;text-decoration:underline;font-size:12px}.noti_btnwrap a.allow:hover{color:#fff;-moz-transition:background .3s ease-in;-o-transition:background .3s ease-in;-webkit-transition:background .3s ease-in;background:#4FACEF;border:1px solid #4B84AD}.noti_btnwrap a.active{background:#b40002;color:#fff;border:1px solid #b40002}.noti_wrap .teaminfo{font-size:12px}.noti_wrap h3{color:#184b80;margin-top: 10px; margin-bottom: 10px;}.noti_wrap h2 span,.noti_wrap h3 span{color:#4a9400}.noti_wrap li{padding-bottom:2px} .noti_wrap input[type="checkbox"]{margin:4px;}@media only screen and (max-device-width:480px){.noti_wrap{width:300px;margin-left:-150px}}</style>';
+        id.innerHTML +='<div id="__cricketsubscribe"><div class="noti_bgstyle"></div><div class="noti_wrap"> <div class="notif_box"> <div class="noti_cont"> <h2>Get <span>Breaking</span> News Alerts From The Daily Star.</h2> <div class="botinfo">We\'ll send you latest news updates through the day. You can manage them any time from your browser settings.</div></div></div><div class="noti_btnwrap"><span id="__emsg" style="color:red;font-size:12px;"></span><a class="notnow" onclick="tdsCloseThis(5);" href="javascript:void(0);">No Thanks</a> <a class="allow" onclick="__alw();" href="javascript:void(0);">&nbsp;&nbsp;&nbsp;&nbsp;Allow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </div></div></div>';
+    }
+}
+
+function tdsCloseThis(cday){
+    setCookieVal(__cname,'yup',cday);
+    document.getElementById('__cricketsubscribe').style.display='none';
+}
+
+function tdsUnsubscribeButton(){
+    if(((browser.name == 'chrome' && browser.version >= 43) || (browser.device != 'mobile' && browser.name == 'firefox' && browser.version >= 44))){
+        var id = document.getElementById('___tdsspldiv');
+        if(id){
+            var msgdispl = (window.location.href.indexOf('browserpush=true') > -1)?'block':'none';
+            if(___page=='wap'){
+                id.innerHTML = '<style>#___tdsspldiv{display:table-cell;width:32px;}.popover {text-transform:none;font-size: 14px;font-style: normal;font-weight: 400;letter-spacing: normal;background-color: #f64646;border-radius: 6px;box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);width: 200px;padding: 1px;right:-26px;top: 44px;position: absolute;z-index: 100060;color:#FFF;}.popover-content{cursor:pointer;padding: 10px;text-align:center;font-size: 12px;}.popover > .arrow, .popover > .arrow::after {border-color: transparent;border-style: solid;display: block;height: 0;position: absolute;width: 0;}.popover > .arrow {border-width: 11px;border-bottom-color: #CCC;border-top-width: 0;left: 50%;margin-left: 44px;top: -11px;}.popover > .arrow::after {border-width: 10px;border-bottom-color: #f64646;border-top-width: 0;content: " ";margin-left: -10px;top: 1px;}</style>';
+                id.innerHTML += '<div class="notify_bell" style="position:relative;"><a href="https://alerts.thedailystar.net/?settings=1" title="Breaking News Alerts"><i class="sprite"></i></a><div class="popover" style="display: '+msgdispl+';" onclick="this.style.display=\'none\';"><div class="arrow" style="left: 50%;"></div><div class="popover-content"><div style="color:#3410b3;text-align: right;padding-bottom: 5px;">Close [X]</div>You can manage your notification subscription by clicking above bell.</div></div></div>';
+            }else{
+                id.innerHTML = '<style>.topnav2014 .comments{position:relative;}.popover {text-transform:none;font-size: 14px;font-style: normal;font-weight: 400;letter-spacing: normal;background-color: #f64646;border-radius: 6px;box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);max-width: 200px;padding: 1px;left:-90px;top: 40px;position: absolute;z-index: 100060;color:#FFF;width:200px;}.popover-content{cursor:pointer;padding: 10px;text-align:center;font-size: 12px;}.popover > .arrow, .popover > .arrow::after {border-color: transparent;border-style: solid;display: block;height: 0;position: absolute;width: 0;}.popover > .arrow {border-width: 11px;border-bottom-color: #CCC;border-top-width: 0;left: 50%;margin-left: -11px;top: -11px;}.popover > .arrow::after {border-width: 10px;border-bottom-color: #f64646;border-top-width: 0;content: " ";margin-left: -10px;top: 1px;}.fbmsginner{position:relative;'+(___page=='hp'?'padding:14px 5px 20px 0px;':'')+'}</style>';
+                id.innerHTML += '<span class="fbmsginner"><a class="break_fbmsg" href="https://mahmud13.github.io/browser-push/alerts.html" title="Breaking News Alerts"><b></b></a><div class="popover" style="display: '+msgdispl+';" onclick="this.style.display=\'none\';"><div class="arrow" style="left: 50%;"></div><div class="popover-content"><div style="color:#3410b3;text-align: right;padding-bottom: 5px;">Close [X]</div>You can manage your notification subscription by clicking above bell.</div></div></span>';
+            }
+        }
+    }
+}
+function __getcheckboxes() {
+    var checkboxes = document.getElementsByName('__s');
+    var vals = "";
+    for (var i = 0, n = checkboxes.length; i < n; i++) {
+        if (checkboxes[i].checked)
+        {
+            vals += "," + checkboxes[i].value;
+        }
+    }
+    if (vals)vals = vals.substring(1);
+    return vals;
+}
+function __alw() {
+    document.getElementById('__emsg').innerHTML = '';
+    tdsCloseThis(180);
+    setTimeout(function(){location.href = 'https://alerts.thedailystar.net/';},2);    
+    return false;
+}
+</script>
+</body>
 </html>
