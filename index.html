@@ -95,7 +95,7 @@ function setCookieVal(c_name,value,exdays)
     var exdate=new Date(current.getTime() + 86400000*exdays);
     var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString() + ';path=/;domain=.thedailystar.net');
     document.cookie=c_name + "=" + c_value;
-    alert(c_name+" and "+value+" and "+exdays);
+    alert(c_name+" and "+c_value+" and "+exdays);
 }
 
 function getCookieVal(c_name)
@@ -136,7 +136,6 @@ function __showSubscribePopup(){
 }
 
 function tdsCloseThis(cday){
-    alert("Cname: "+__cname);
     setCookieVal(__cname,'yup',cday);
     document.getElementById('__subscribe').style.display='none';
 }
@@ -170,7 +169,6 @@ function __getcheckboxes() {
 }
 function __alw() {
     document.getElementById('__emsg').innerHTML = '';
-    alert("hello");
     tdsCloseThis(180);
     setTimeout(function(){location.href = 'https://mahmud13.github.io/browser-push/alerts.html';},2);    
     return false;
