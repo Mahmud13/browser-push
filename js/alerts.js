@@ -186,21 +186,6 @@ function subscribe(old) {
             printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+err+'].</span>');
         }
     });
-
-        serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
-                .then(function (subscription) {
-                    console.log("subscription "+subscription);
-                    return true;
-                    var ep = getEndPoint(subscription);
-                    if (settings == '' || old=='1') {
-                        onRegisterNotify(serviceWorkerRegistration);
-                    }
-
-                })
-                .catch(function (e) {
-
-                });
-    });
 }
 
 function overlayAction(type) {
