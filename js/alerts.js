@@ -142,6 +142,54 @@ function subscribe(old) {
         overlayAction('none');
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+            var config = { 
+                apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
+                authDomain: "graphite-post-87309.firebaseapp.com", 
+                databaseURL: "https://graphite-post-87309.firebaseio.com", 
+                storageBucket: "graphite-post-87309.appspot.com", 
+                messagingSenderId: "850606490152" 
+            }; 
+            firebase.initializeApp(config); 
+
+            const messaging = firebase.messaging();
+
+            messaging.requestPermission()
+            .then(function() {
+                console.log('have perm');
+                return messaging.getToken();
+            })
+            .then(function(token) {
+                $.ajax({
+                    type: "GET",
+                    data: {
+                        token: token,
+                        device: 'browser',
+                        imei: '0000'
+                    },
+                    url: '/notification/register',
+                    success: function(data){
+                        overlayAction('none');
+                        var msg = 'You have successfully subscribed';
+                        printMsg(msg);
+                        redirectToParent(1000);
+                        return true;
+                    },
+                    error: function(e){
+                        overlayAction('none');
+                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e+'].</span>');
+                    }
+            });
+    })
+    .catch(function(err) {
+        if (Notification.permission === 'denied') {
+            overlayAction('none');
+            printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/bar-help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
+        } else {
+            overlayAction('none');
+            printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e+'].</span>');
+        }
+    });
+
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
                 .then(function (subscription) {
                     console.log("subscription "+subscription);
@@ -150,21 +198,10 @@ function subscribe(old) {
                     if (settings == '' || old=='1') {
                         onRegisterNotify(serviceWorkerRegistration);
                     }
-                    overlayAction('none');
-                    subscribeNow(ep, '');
-                    var msg = 'You have successfully subscribed';
-                    printMsg(msg);
-                    redirectToParent(1000);
-                    return true;
+
                 })
                 .catch(function (e) {
-                    if (Notification.permission === 'denied') {
-                        overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/bar-help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
-                    } else {
-                        overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e+'].</span>');
-                    }
+
                 });
     });
 }
