@@ -119,12 +119,12 @@ function unSubscribe() {
                         redirectToParent(10000);
                         settings = '';
                     }).catch(function (e) {
-                        printMsg('Error during getSubscription()', e);
+                        printMsg('Error during getSubscription()' + e);
                         redirectToParent(2000);
                         return;
                     });
                 }).catch(function (e) {
-                    printMsg('Error thrown while unsubscribing from push messaging.', e);
+                    printMsg('Error thrown while unsubscribing from push messaging.' + e);
                     redirectToParent(2000);
                     return;
                 });
