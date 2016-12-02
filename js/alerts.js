@@ -75,6 +75,7 @@ function initialiseState() {
                     }
 
                     var ep = getEndPoint(subscription);
+                    console.log("paise");
                     console.log(ep);
                     subscribeNow(ep, '');
 
