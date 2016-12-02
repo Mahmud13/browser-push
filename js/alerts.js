@@ -76,12 +76,6 @@ function initialiseState() {
                         }
                         return true;
                     }
-
-                    var ep = getEndPoint(subscription);
-
-                    console.log(ep);
-                    subscribeNow(ep, '');
-
                     msg = 'You are already subscribed.';
                     var time = 1000;
                     if (settings != '') {
@@ -171,6 +165,9 @@ function subscribe(old) {
                         overlayAction('none');
                         var msg = 'You have successfully subscribed';
                         printMsg(msg);
+                        if (settings == '' || old=='1') {
+                            onRegisterNotify(serviceWorkerRegistration);
+                        }
                         //redirectToParent(1000);
                         return true;
                     },
