@@ -37,6 +37,7 @@ window.addEventListener('load', function () {
 });
 
 function initialiseState() {
+    console.log("ashche");
     if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
         printMsg('Notifications aren\'t supported.');
         redirectToParent(2000);
