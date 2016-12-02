@@ -93,7 +93,7 @@ function setCookieVal(c_name,value,exdays)
 {
     var current = new Date();
     var exdate=new Date(current.getTime() + 86400000*exdays);
-    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString() + ';path=/;domain=.thedailystar.net');
+    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString() + ';path=/;domain=thedailystar.net');
     document.cookie=c_name + "=" + c_value;
     alert(c_name+" and "+c_value+" and "+exdays);
 }
@@ -101,6 +101,7 @@ function setCookieVal(c_name,value,exdays)
 function getCookieVal(c_name)
 {
     var i,x,y,ARRcookies=document.cookie.split(";");
+    alert(c_name);
     for (i=0;i<ARRcookies.length;i++)
     {
         x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
@@ -108,6 +109,7 @@ function getCookieVal(c_name)
         x=x.replace(/^\s+|\s+$/g,"");
         if (x==c_name)
         {
+            alert(c_name);
             return unescape(y);
         }
     }
