@@ -145,6 +145,7 @@ function subscribe(old) {
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
                 .then(function (subscription) {
                     console.log("subscription "+subscription);
+                    return true;
                     var ep = getEndPoint(subscription);
                     if (settings == '' || old=='1') {
                         onRegisterNotify(serviceWorkerRegistration);
