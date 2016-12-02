@@ -175,6 +175,7 @@ function subscribe(old) {
                         overlayAction('none');
                         printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e+'].</span>');
                     }
+                });
             });
     })
     .catch(function(err) {
