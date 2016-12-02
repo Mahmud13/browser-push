@@ -63,7 +63,6 @@ function initialiseState() {
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         // Do we already have a push message subscription?  
-        console.log(serviceWorkerRegistration);
         serviceWorkerRegistration.pushManager.getSubscription()
                 .then(function (subscription) {
                     var msg = '';
@@ -73,13 +72,14 @@ function initialiseState() {
                             msg = 'Hey, you are not subscribed <a style="color:#7ADA10;" href="javascript:void(0);" onclick="subscribe(1);">Click here to subscribe Now</a>';
                             printMsg(msg);
                         } else {
+                                                console.log("paise");
                             subscribe('');
                         }
                         return true;
                     }
 
                     var ep = getEndPoint(subscription);
-                    console.log("paise");
+
                     console.log(ep);
                     subscribeNow(ep, '');
 
