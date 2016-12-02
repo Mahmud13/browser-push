@@ -142,7 +142,7 @@ function subscribe(old) {
         overlayAction('none');
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
-        serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
+        serviceWorkerRegistration.pushManager.subscribe()
                 .then(function (subscription) {
                     var ep = getEndPoint(subscription);
                     if (settings == '' || old=='1') {
