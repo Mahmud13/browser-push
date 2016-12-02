@@ -58,7 +58,6 @@ function initialiseState() {
         redirectToParent(2000);
         return;
     }
-        console.log("ashche");
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         // Do we already have a push message subscription?  
         serviceWorkerRegistration.pushManager.getSubscription()
@@ -76,6 +75,7 @@ function initialiseState() {
                     }
 
                     var ep = getEndPoint(subscription);
+                    console.log(ep);
                     subscribeNow(ep, '');
 
                     msg = 'You are already subscribed.';
