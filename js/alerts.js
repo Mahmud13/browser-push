@@ -29,7 +29,7 @@ var regObj = '';
 window.addEventListener('load', function () {
     // enhance and add push messaging support, otherwise continue without it.  
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('js/sw.js')
                 .then(initialiseState)
                 .catch(function (error) {
                     printMsg('<span style="color:#D67C7C;">Your browser is not supporting this feature, please get chrome (42+) or firefox (44+) </span>' + error)
