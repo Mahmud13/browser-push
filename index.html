@@ -101,7 +101,7 @@ function setCookieVal(c_name,value,exdays)
 function getCookieVal(c_name)
 {
     var i,x,y,ARRcookies=document.cookie.split(";");
-    alert(c_name);
+    alert(document.cookie);
     for (i=0;i<ARRcookies.length;i++)
     {
         x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
