@@ -37,7 +37,6 @@ window.addEventListener('load', function () {
 });
 
 function initialiseState() {
-    console.log("ashche");
     if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
         printMsg('Notifications aren\'t supported.');
         redirectToParent(2000);
@@ -59,6 +58,7 @@ function initialiseState() {
         redirectToParent(2000);
         return;
     }
+        console.log("ashche");
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         // Do we already have a push message subscription?  
         serviceWorkerRegistration.pushManager.getSubscription()
