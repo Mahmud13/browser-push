@@ -142,9 +142,6 @@ function subscribe(old) {
         overlayAction('none');
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
-
-            importScripts("https://www.gstatic.com/firebasejs/3.5.2/firebase.js");
-
             var config = { 
                 apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
                 authDomain: "graphite-post-87309.firebaseapp.com", 
