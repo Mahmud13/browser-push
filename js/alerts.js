@@ -60,6 +60,7 @@ function initialiseState() {
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         // Do we already have a push message subscription?  
+        console.log(serviceWorkerRegistration);
         serviceWorkerRegistration.pushManager.getSubscription()
                 .then(function (subscription) {
                     var msg = '';
