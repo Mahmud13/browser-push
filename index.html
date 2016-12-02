@@ -88,38 +88,31 @@ function get_browser_info(){
     if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
     return {name: M[0].toLowerCase(),version: M[1],device:d};
 }
-
-function setCookieVal(c_name,value,exdays)
-{
-    var current = new Date();
-    var exdate=new Date(current.getTime() + 86400000*exdays);
-    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString() + ';path=/;domain=thedailystar.net');
-    document.cookie=c_name + "=" + c_value;
+function setCookieVal(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-
-function getCookieVal(c_name)
-{
-    var i,x,y,ARRcookies=document.cookie.split(";");
-    alert(document.cookie);
-    for (i=0;i<ARRcookies.length;i++)
-    {
-        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-        x=x.replace(/^\s+|\s+$/g,"");
-        if (x==c_name)
-        {
-            alert(c_name);
-            return unescape(y);
+function getCookieVal(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
         }
     }
-    return '';
+    return "";
 }
 var __cname = 'tds_alerts';
 var __matchid = '';
 var __cday = 120;
-var __page = 'hp';
+//var __page = 'hp';
 var ___page = (typeof __page !== 'undefined')?__page:'';
-
 var browser=get_browser_info();
 if(((browser.name == 'chrome' && browser.version >= 43) || (browser.device != 'mobile' && browser.name == 'firefox' && browser.version >= 44))){
     var cval = getCookieVal(__cname) || '';
@@ -128,7 +121,6 @@ if(((browser.name == 'chrome' && browser.version >= 43) || (browser.device != 'm
     }
     tdsUnsubscribeButton();
 }
-
 function __showSubscribePopup(){
     var id = document.getElementById('___tdspushdiv');
     if(id){
@@ -136,13 +128,10 @@ function __showSubscribePopup(){
         id.innerHTML +='<div id="__subscribe"><div class="noti_bgstyle"></div><div class="noti_wrap"> <div class="notif_box"> <div class="noti_cont"> <h2>Get <span>Breaking</span> News Alerts From The Daily Star.</h2> <div class="botinfo">We\'ll send you latest news updates through the day. You can manage them any time from your browser settings.</div></div></div><div class="noti_btnwrap"><span id="__emsg" style="color:red;font-size:12px;"></span><a class="notnow" onclick="tdsCloseThis(5);" href="javascript:void(0);">No Thanks</a> <a class="allow" onclick="__alw();" href="javascript:void(0);">&nbsp;&nbsp;&nbsp;&nbsp;Allow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </div></div></div>';
     }
 }
-
 function tdsCloseThis(cday){
     setCookieVal(__cname,'yup',cday);
-    alert(document.cookie);
     document.getElementById('__subscribe').style.display='none';
 }
-
 function tdsUnsubscribeButton(){
     if(((browser.name == 'chrome' && browser.version >= 43) || (browser.device != 'mobile' && browser.name == 'firefox' && browser.version >= 44))){
         var id = document.getElementById('___tdsspldiv');
