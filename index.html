@@ -95,7 +95,6 @@ function setCookieVal(c_name,value,exdays)
     var exdate=new Date(current.getTime() + 86400000*exdays);
     var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString() + ';path=/;domain=thedailystar.net');
     document.cookie=c_name + "=" + c_value;
-    alert(document.cookie);
 }
 
 function getCookieVal(c_name)
@@ -140,6 +139,7 @@ function __showSubscribePopup(){
 
 function tdsCloseThis(cday){
     setCookieVal(__cname,'yup',cday);
+    alert(document.cookie);
     document.getElementById('__subscribe').style.display='none';
 }
 
