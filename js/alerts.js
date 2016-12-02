@@ -89,7 +89,7 @@ function initialiseState() {
                     redirectToParent(time);
                 })
                 .catch(function (err) {
-                    printMsg('Error during getSubscription()', err);
+                    printMsg('Error during getSubscription()'+ err);
                     redirectToParent(2000);
                     return;
                 });
