@@ -36,13 +36,13 @@ window.addEventListener('load', function () {
                 });
     } else {
         printMsg('Service workers aren\'t supported in this browser.');
-        redirectToParent(2000);
+        //redirectToParent(2000);
     }
 });
 function initialiseState() {
     if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
         printMsg('Notifications aren\'t supported.');
-        redirectToParent(2000);
+        //redirectToParent(2000);
         return;
     }
 
@@ -58,7 +58,7 @@ function initialiseState() {
     if (!('PushManager' in window)) {
         overlayAction('none');
         printMsg('Push messaging isn\'t supported.');
-        redirectToParent(2000);
+        //redirectToParent(2000);
         return;
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
@@ -89,11 +89,11 @@ function initialiseState() {
                         time = 20000;
                     }
                     printMsg(msg);
-                    redirectToParent(time);
+                    //redirectToParent(time);
                 })
                 .catch(function (err) {
                     printMsg('Error during getSubscription()'+ err);
-                    redirectToParent(2000);
+                    //redirectToParent(2000);
                     return;
                 });
     }).catch(function(error) {
@@ -109,7 +109,7 @@ function unSubscribe() {
                 function (subscription) {
                     // Check we have a subscription to unsubscribe  
                     if (!subscription) {
-                        redirectToParent(2000);
+                        //redirectToParent(2000);
                         return;
                     }
 
@@ -119,16 +119,16 @@ function unSubscribe() {
                         var msg = 'You have successfully Un-subscribed';
                         msg += ' <a style="color:#7ADA10;" href="javascript:void(0);" onclick="subscribe(\'\');">Click here to subscribe again</a>';
                         printMsg(msg);
-                        redirectToParent(10000);
+                        //redirectToParent(10000);
                         settings = '';
                     }).catch(function (e) {
                         printMsg('Error during getSubscription()' + e);
-                        redirectToParent(2000);
+                        //redirectToParent(2000);
                         return;
                     });
                 }).catch(function (e) {
                     printMsg('Error thrown while unsubscribing from push messaging.' + e);
-                    redirectToParent(2000);
+                    //redirectToParent(2000);
                     return;
                 });
     });
@@ -171,7 +171,7 @@ function subscribe(old) {
                         overlayAction('none');
                         var msg = 'You have successfully subscribed';
                         printMsg(msg);
-                        redirectToParent(1000);
+                        //redirectToParent(1000);
                         return true;
                     },
                     error: function(e){
