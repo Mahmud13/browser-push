@@ -72,7 +72,6 @@ function initialiseState() {
                             msg = 'Hey, you are not subscribed <a style="color:#7ADA10;" href="javascript:void(0);" onclick="subscribe(1);">Click here to subscribe Now</a>';
                             printMsg(msg);
                         } else {
-                                                console.log("paise");
                             subscribe('');
                         }
                         return true;
@@ -162,7 +161,7 @@ function subscribe(old) {
                         printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
                     } else {
                         overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e.message+'].</span>');
+                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e+'].</span>');
                     }
                 });
     });
