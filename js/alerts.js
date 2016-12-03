@@ -153,30 +153,7 @@ function subscribe(old) {
                 return messaging.getToken();
             })
             .then(function(token) {
-                $.ajax({
-                    type: "POST",
-                    data: {
-                        token: token,
-                        device: 'browser',
-                        imei: '0000'
-                    },
-                    dataType: 'jsonp',
-                    url: 'http://realpush.anontech.info/notification/register',
-                    success: function(data){
-                        overlayAction('none');
-                        var msg = 'You have successfully subscribed';
-                        printMsg(msg);
-                        if (settings == '' || old=='1') {
-                            onRegisterNotify(serviceWorkerRegistration);
-                        }
-                        //redirectToParent(1000);
-                        return true;
-                    },
-                    error: function(e){
-                        overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e+'].</span>');
-                    }
-                });
+                console.log(token);
             });
     })
     .catch(function(err) {
