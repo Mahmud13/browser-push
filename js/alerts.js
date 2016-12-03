@@ -135,26 +135,42 @@ function subscribe(old) {
     if (Notification.permission == 'granted') {
         overlayAction('none');
     }
+     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+        serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
+                .then(function (subscription) {
+                    var config = { 
+                        apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
+                        authDomain: "graphite-post-87309.firebaseapp.com", 
+                        databaseURL: "https://graphite-post-87309.firebaseio.com", 
+                        storageBucket: "graphite-post-87309.appspot.com", 
+                        messagingSenderId: "850606490152" 
+                    }; 
+                    firebase.initializeApp(config); 
+
+                    const messaging = firebase.messaging();
+
+                    messaging.requestPermission()
+                    .then(function() {
+                        console.log('have perm');
+                        return messaging.getToken();
+                    })
+                    .then(function(token) {
+                        console.log(token);
+                    });
+                    return true;
+                })
+                .catch(function (e) {
+                    if (Notification.permission === 'denied') {
+                        overlayAction('none');
+                        printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
+                    } else {
+                        overlayAction('none');
+                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e.message+'].</span>');
+                    }
+                });
+    });
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
-            var config = { 
-                apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
-                authDomain: "graphite-post-87309.firebaseapp.com", 
-                databaseURL: "https://graphite-post-87309.firebaseio.com", 
-                storageBucket: "graphite-post-87309.appspot.com", 
-                messagingSenderId: "850606490152" 
-            }; 
-            firebase.initializeApp(config); 
-
-            const messaging = firebase.messaging();
-
-            messaging.requestPermission()
-            .then(function() {
-                console.log('have perm');
-                return messaging.getToken();
-            })
-            .then(function(token) {
-                console.log(token);
-            });
+           
     })
     .catch(function(err) {
         if (Notification.permission === 'denied') {
