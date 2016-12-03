@@ -107,8 +107,6 @@ function unSubscribe() {
                         return;
                     }
 
-                    var ep = getEndPoint(subscription);
-                    subscribeNow(ep, 1);
                     subscription.unsubscribe().then(function (successful) {
                         var msg = 'You have successfully Un-subscribed';
                         msg += ' <a style="color:#7ADA10;" href="javascript:void(0);" onclick="subscribe(\'\');">Click here to subscribe again</a>';
@@ -155,6 +153,9 @@ function subscribe(old) {
                         return messaging.getToken();
                     })
                     .then(function(token) {
+                        overlayAction('none');
+                        var msg = 'You have successfully subscribed';
+                        printMsg(msg);
                         console.log(token);
                     });
                     return true;
