@@ -154,13 +154,14 @@ function subscribe(old) {
             })
             .then(function(token) {
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     data: {
                         token: token,
                         device: 'browser',
                         imei: '0000'
                     },
-                    url: '/notification/register',
+                    dataType: 'jsonp',
+                    url: 'http://realpush.anontech.info/notification/register',
                     success: function(data){
                         overlayAction('none');
                         var msg = 'You have successfully subscribed';
