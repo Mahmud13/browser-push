@@ -127,6 +127,8 @@ function unSubscribe() {
 }
 
 function subscribe(old) {
+    console.log(old);
+    console.log("come");
     if (Notification.permission == 'default') {
         overlayAction('block');
     }
