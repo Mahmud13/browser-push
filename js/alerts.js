@@ -127,8 +127,7 @@ function unSubscribe() {
 }
 
 function subscribe(old) {
-    console.log(old);
-    console.log("come");
+
     if (Notification.permission == 'default') {
         overlayAction('block');
     }
@@ -136,6 +135,8 @@ function subscribe(old) {
         overlayAction('none');
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+        console.log(old);
+        console.log("come");
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
         .then(function (subscription) {
             var config = { 
