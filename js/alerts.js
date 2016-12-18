@@ -152,7 +152,6 @@ function subscribe(old) {
                 return messaging.getToken();
             })
             .then(function(token) {
-                console.log(old);
                 $.ajax({
                     type: "POST",
                     data: {
