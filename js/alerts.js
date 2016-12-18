@@ -36,13 +36,13 @@ window.addEventListener('load', function () {
                 });
     } else {
         printMsg('Service workers aren\'t supported in this browser.');
-        //redirectToParent(2000);
+        redirectToParent(2000);
     }
 });
 function initialiseState() {
     if (!('showNotification' in ServiceWorkerRegistration.prototype)) {
         printMsg('Notifications aren\'t supported.');
-        //redirectToParent(2000);
+        redirectToParent(2000);
         return;
     }
 
@@ -58,7 +58,7 @@ function initialiseState() {
     if (!('PushManager' in window)) {
         overlayAction('none');
         printMsg('Push messaging isn\'t supported.');
-        //redirectToParent(2000);
+        redirectToParent(2000);
         return;
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
@@ -83,11 +83,11 @@ function initialiseState() {
                         time = 20000;
                     }
                     printMsg(msg);
-                    //redirectToParent(time);
+                    redirectToParent(time);
                 })
                 .catch(function (err) {
                     printMsg('Error during getSubscription()'+ err);
-                    //redirectToParent(2000);
+                    redirectToParent(2000);
                     return;
                 });
     }).catch(function(error) {
@@ -103,7 +103,7 @@ function unSubscribe() {
                 function (subscription) {
                     // Check we have a subscription to unsubscribe  
                     if (!subscription) {
-                        //redirectToParent(2000);
+                        redirectToParent(2000);
                         return;
                     }
 
@@ -111,16 +111,16 @@ function unSubscribe() {
                         var msg = 'You have successfully Un-subscribed';
                         msg += ' <a style="color:#7ADA10;" href="javascript:void(0);" onclick="subscribe(\'\');">Click here to subscribe again</a>';
                         printMsg(msg);
-                        //redirectToParent(10000);
+                        redirectToParent(10000);
                         settings = '';
                     }).catch(function (e) {
                         printMsg('Error during getSubscription()' + e);
-                        //redirectToParent(2000);
+                        redirectToParent(2000);
                         return;
                     });
                 }).catch(function (e) {
                     printMsg('Error thrown while unsubscribing from push messaging.' + e);
-                    //redirectToParent(2000);
+                    redirectToParent(2000);
                     return;
                 });
     });
@@ -133,60 +133,68 @@ function subscribe(old) {
     if (Notification.permission == 'granted') {
         overlayAction('none');
     }
-     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+    navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
-                .then(function (subscription) {
-                    var config = { 
-                        apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
-                        authDomain: "graphite-post-87309.firebaseapp.com", 
-                        databaseURL: "https://graphite-post-87309.firebaseio.com", 
-                        storageBucket: "graphite-post-87309.appspot.com", 
-                        messagingSenderId: "850606490152" 
-                    }; 
-                    firebase.initializeApp(config); 
+        .then(function (subscription) {
+            var config = { 
+                apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
+                authDomain: "graphite-post-87309.firebaseapp.com", 
+                databaseURL: "https://graphite-post-87309.firebaseio.com", 
+                storageBucket: "graphite-post-87309.appspot.com", 
+                messagingSenderId: "850606490152" 
+            }; 
+            firebase.initializeApp(config); 
 
-                    const messaging = firebase.messaging();
+            const messaging = firebase.messaging();
 
-                    messaging.requestPermission()
-                    .then(function() {
-                        console.log('have perm');
-                        return messaging.getToken();
-                    })
-                    .then(function(token) {
+            messaging.requestPermission()
+            .then(function() {
+                return messaging.getToken();
+            })
+            .then(function(token) {
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        token: token,
+                        device: 'browser',
+                        location : "",
+                        birth : "",
+                        sex : "",
+                        old: old
+                    },
+                    url: 'https://alerts.thedailystar.net/notification/register',
+                    success: function(data){
                         overlayAction('none');
                         var msg = 'You have successfully subscribed';
-                        printMsg(msg);
-                        console.log(token);
-                    });
-                    return true;
-                })
-                .catch(function (e) {
-                    if (Notification.permission === 'denied') {
+                        printMsg(msg + data);
+                        if (settings == '' || old=='1') {
+                            onRegisterNotify(serviceWorkerRegistration);
+                        }
+                        redirectToParent(1000);
+                        return true;
+                    },
+                    error: function(e,x,q){
                         overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
-                    } else {
-                        overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e.message+'].</span>');
+                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e.responseText+'].</span>');
                     }
                 });
-    });
-    navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
-           
-    })
-    .catch(function(err) {
-        if (Notification.permission === 'denied') {
-            overlayAction('none');
-            printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/bar-help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
-        } else {
-            overlayAction('none');
-            printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+err+'].</span>');
-        }
+            });
+        })
+        .catch(function(err) {
+            if (Notification.permission === 'denied') {
+                overlayAction('none');
+                printMsg('<span style="color:#D67C7C;">You have blocked notifications for this site.</span><br/><span style="color:#7ADA10;">Fix: Please click <img style="position:relative;top:3px;" src="images/bar-help.png" alt="Green Icon in address bar" title="Green Icon in address bar"/> and allow notification permission and refresh this page.</span>');
+            } else {
+                overlayAction('none');
+                printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+err+'].</span>');
+            }
+        })
     });
 }
 
 function overlayAction(type) {
-    if (document.getElementById('ndtvnotify') && (type == 'block' || type == 'none')) {
-        document.getElementById('ndtvnotify').style.display = type;
+    if (document.getElementById('tdsnotify') && (type == 'block' || type == 'none')) {
+        document.getElementById('tdsnotify').style.display = type;
     }
 }
 function redirectToParent(time) {
@@ -195,64 +203,6 @@ function redirectToParent(time) {
             location.href = parentsite;
         }, time);
     }
-}
-
-function getEndPoint(pushSubscription) {
-    if (pushSubscription.subscriptionId) {
-        return pushSubscription.subscriptionId;
-    }
-    var endpoint = 'https://android.googleapis.com/gcm/send/';
-    var parts = pushSubscription.endpoint.split(endpoint);
-    if (parts.length > 1)
-    {
-        return {
-            'browser': 'chrome',
-            'id': parts[1]
-        };
-    }
-    endpoint = 'https://updates.push.services.mozilla.com/push/';
-    parts = pushSubscription.endpoint.split(endpoint);
-    if (parts.length > 1)
-    {
-        return {
-            'browser': 'firefox',
-            'id': parts[1]
-        };
-    }
-    
-    endpoint = 'https://updates.push.services.mozilla.com/wpush/';
-    parts = pushSubscription.endpoint.split(endpoint);
-    if (parts.length > 1)
-    {
-        return {
-            'browser': 'firefox',
-            'id': parts[1]
-        };
-    }
-    return '';
-}
-
-function subscribeNow(registrationDetail, unregister) {
-    if (!registrationDetail) {
-        return;
-    }
-    /*console.log(registrationDetail);*/
-    var ep = 'https://ipush.apps.ndtv.com/subscribeBrowser.php';
-    //var ep = 'http://localhost/ndtvapps/pushnotification/public/subscribeBrowser.php';
-
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        url: ep,
-        data: {
-            'packageName': 'ndtv.' + registrationDetail.browser,
-            'env': 'PRODUCTION',
-            'sections': sections,
-            'unregister': unregister,
-            'registration_id': registrationDetail.id
-        },
-        complete: function (data) {}
-    });
 }
 
 function printMsg(msg) {
@@ -293,13 +243,13 @@ function get_browser_info() {
 
 function onRegisterNotify(reg) {
     try {
-        var notification = reg.showNotification('NDTV', {
-            body: 'Thank you for subscribing to NDTV News alerts.',
-            icon: 'images/logo.png',
+        var notification = reg.showNotification('The Daily Star', {
+            body: 'Thank you for subscribing to News alerts.',
+            icon: 'images/tds-logo.png',
             vibrate: [300, 100, 400], // Vibrate 300ms, pause 100ms, then vibrate 400ms
-            tag: 'ndtvnews-welcome',
+            tag: 'tdsnews-welcome',
             data: {
-                url: 'http://www.ndtv.com?browserpush'
+                url: 'http://www.thedailystar.net?browserpush'
             }
         });
         notification.onclick = function (event) {
