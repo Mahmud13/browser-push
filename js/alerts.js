@@ -127,7 +127,6 @@ function unSubscribe() {
 }
 
 function subscribe(old) {
-
     if (Notification.permission == 'default') {
         overlayAction('block');
     }
@@ -137,8 +136,6 @@ function subscribe(old) {
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
         .then(function (subscription) {
-            console.log(old);
-            console.log("come");
             var config = { 
                 apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
                 authDomain: "graphite-post-87309.firebaseapp.com", 
@@ -164,7 +161,6 @@ function subscribe(old) {
                         location : "",
                         birth : "",
                         sex : "",
-                        old: old
                     },
                     url: 'https://alerts.thedailystar.net/notification/register',
                     success: function(data){
