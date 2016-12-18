@@ -135,10 +135,10 @@ function subscribe(old) {
         overlayAction('none');
     }
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
-        console.log(old);
-        console.log("come");
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
         .then(function (subscription) {
+            console.log(old);
+            console.log("come");
             var config = { 
                 apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
                 authDomain: "graphite-post-87309.firebaseapp.com", 
