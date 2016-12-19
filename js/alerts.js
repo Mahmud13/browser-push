@@ -152,31 +152,7 @@ function subscribe(old) {
                 return messaging.getToken();
             })
             .then(function(token) {
-                $.ajax({
-                    type: "POST",
-                    data: {
-                        token: token,
-                        device: 'browser',
-                        location : "",
-                        birth : "",
-                        sex : "",
-                    },
-                    url: 'https://alerts.thedailystar.net/notification/register',
-                    success: function(data){
-                        overlayAction('none');
-                        var msg = 'You have successfully subscribed';
-                        printMsg(msg + data);
-                        if (settings == '' || old=='1') {
-                            onRegisterNotify(serviceWorkerRegistration);
-                        }
-                        redirectToParent(1000);
-                        return true;
-                    },
-                    error: function(e,x,q){
-                        overlayAction('none');
-                        printMsg('<span style="color:#D67C7C;">Something wrong hapenned, please refresh the page to try again ['+e.responseText+'].</span>');
-                    }
-                });
+                console.log(token);
             });
         })
         .catch(function(err) {
