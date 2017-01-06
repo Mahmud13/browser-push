@@ -25,6 +25,15 @@ if (tds == 'yes') {
     parentsite = '';
 }
 var regObj = '';
+var config = { 
+     apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
+     authDomain: "graphite-post-87309.firebaseapp.com", 
+     databaseURL: "https://graphite-post-87309.firebaseio.com", 
+     storageBucket: "graphite-post-87309.appspot.com", 
+     messagingSenderId: "850606490152" 
+}; 
+firebase.initializeApp(config); 
+
 const messaging = firebase.messaging();
 console.log(messaging.getToken());
 window.addEventListener('load', function () {
