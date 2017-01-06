@@ -25,7 +25,8 @@ if (tds == 'yes') {
     parentsite = '';
 }
 var regObj = '';
-
+const messaging = firebase.messaging();
+console.log(messaging.getToken());
 window.addEventListener('load', function () {
     // enhance and add push messaging support, otherwise continue without it.  
     if ('serviceWorker' in navigator) {
