@@ -86,6 +86,8 @@ function initialiseState() {
                         }
                         return true;
                     }
+                    console.log(subscription);
+                    return true;
                     msg = 'You are already subscribed.';
                     var time = 1000;
                     if (settings != '') {
