@@ -25,14 +25,13 @@ if (tds == 'yes') {
     parentsite = '';
 }
 var regObj = '';
-var config = {
-    apiKey: "AIzaSyB9CDuX07gqxnRYbIYyeegVva6WaaUcWJQ",
-    authDomain: "tds-real-push-911ab.firebaseapp.com",
-    databaseURL: "https://tds-real-push-911ab.firebaseio.com",
-    projectId: "tds-real-push-911ab",
-    storageBucket: "tds-real-push-911ab.appspot.com",
-    messagingSenderId: "56399665193"
-  };
+var config = { 
+     apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
+     authDomain: "graphite-post-87309.firebaseapp.com", 
+     databaseURL: "https://graphite-post-87309.firebaseio.com", 
+     storageBucket: "graphite-post-87309.appspot.com", 
+     messagingSenderId: "850606490152" 
+}; 
 firebase.initializeApp(config); 
 
 const messaging = firebase.messaging();
@@ -149,14 +148,13 @@ function subscribe(old) {
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
         .then(function (subscription) {
-            var config = {
-                apiKey: "AIzaSyB9CDuX07gqxnRYbIYyeegVva6WaaUcWJQ",
-                authDomain: "tds-real-push-911ab.firebaseapp.com",
-                databaseURL: "https://tds-real-push-911ab.firebaseio.com",
-                projectId: "tds-real-push-911ab",
-                storageBucket: "tds-real-push-911ab.appspot.com",
-                messagingSenderId: "56399665193"
-            };
+            var config = { 
+                apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
+                authDomain: "graphite-post-87309.firebaseapp.com", 
+                databaseURL: "https://graphite-post-87309.firebaseio.com", 
+                storageBucket: "graphite-post-87309.appspot.com", 
+                messagingSenderId: "850606490152" 
+            }; 
             firebase.initializeApp(config); 
 
             const messaging = firebase.messaging();
