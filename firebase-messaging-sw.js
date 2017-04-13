@@ -14,19 +14,22 @@ firebase.initializeApp({
 // messages.
 const messaging = firebase.messaging();
 
+//----------------------------Foregound message end------------------------------//
 messaging.setBackgroundMessageHandler(function(payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
   // Customize notification here
   const notificationTitle = 'Background Message Title';
   const notificationOptions = {
     body: 'Background Message body.',
     icon: '/firebase-logo.png'
   };
+    var msg_id = event.notification.data.msg_id;
+    var user_id = event.notification.data.user_id;
+    var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
+    updateStatus('received', params);
 
   return self.registration.showNotification(notificationTitle,
       notificationOptions);
 });
-// [END background_handler]
 // The user has clicked on the notification ...
 self.addEventListener('notificationclick', function (event) {
     //console.log(event.notification.data.url);
@@ -45,8 +48,29 @@ self.addEventListener('notificationclick', function (event) {
                         return client.focus();
                 }
                 if (clients.openWindow) {
-                        return clients.openWindow("https://www.google.com");
+                    if (event.action === 'settings') {
+                        return clients.openWindow('https://alerts.thedailystar.net/?settings=1');                        
+                    } else {
+                        var msg_id = event.notification.data.msg_id;
+                        var user_id = event.notification.data.user_id;
+                        var status = event.notification.data.status;
+                        var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
+                        updateStatus('opened', params);
+                        return clients.openWindow(event.notification.data.url);    
+                    }
                 }
             })
             );
 });
+
+
+function updateStatus(status, params) {
+    var url = "http://realpush.anontech.info/notification/" + status;
+    var http = window.XDomainRequest ? new window.XDomainRequest() : new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.setRequestHeader("Content-length", params.length);
+    http.setRequestHeader("Connection", "close");
+    http.send(params);
+}
+
