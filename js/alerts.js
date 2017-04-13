@@ -25,13 +25,14 @@ if (tds == 'yes') {
     parentsite = '';
 }
 var regObj = '';
-var config = { 
-     apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
-     authDomain: "graphite-post-87309.firebaseapp.com", 
-     databaseURL: "https://graphite-post-87309.firebaseio.com", 
-     storageBucket: "graphite-post-87309.appspot.com", 
-     messagingSenderId: "850606490152" 
-}; 
+var config = {
+    apiKey: "AIzaSyD2CvhfoXZWEz2VIL40h73HZ8RJJQckuRw",
+    authDomain: "push-2eb26.firebaseapp.com",
+    databaseURL: "https://push-2eb26.firebaseio.com",
+    projectId: "push-2eb26",
+    storageBucket: "push-2eb26.appspot.com",
+    messagingSenderId: "443400255115"
+  };
 firebase.initializeApp(config); 
 
 const messaging = firebase.messaging();
@@ -148,13 +149,14 @@ function subscribe(old) {
     navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true})
         .then(function (subscription) {
-            var config = { 
-                apiKey: "AIzaSyAyHPvsdc6Sv8AvVu03VP1mdMryT_A-ZZ4", 
-                authDomain: "graphite-post-87309.firebaseapp.com", 
-                databaseURL: "https://graphite-post-87309.firebaseio.com", 
-                storageBucket: "graphite-post-87309.appspot.com", 
-                messagingSenderId: "850606490152" 
-            }; 
+       var config = {
+    apiKey: "AIzaSyD2CvhfoXZWEz2VIL40h73HZ8RJJQckuRw",
+    authDomain: "push-2eb26.firebaseapp.com",
+    databaseURL: "https://push-2eb26.firebaseio.com",
+    projectId: "push-2eb26",
+    storageBucket: "push-2eb26.appspot.com",
+    messagingSenderId: "443400255115"
+  };
             firebase.initializeApp(config); 
 
             const messaging = firebase.messaging();
