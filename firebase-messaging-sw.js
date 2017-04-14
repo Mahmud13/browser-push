@@ -64,14 +64,3 @@ self.addEventListener('notificationclick', function (event) {
             );
 });
 
-
-
-function updateStatus(status, params) {
-    var url = "http://realpush.anontech.info/notification/" + status;
-    var http = window.XDomainRequest ? new window.XDomainRequest() : new XMLHttpRequest();
-    http.open("POST", url, true);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.setRequestHeader("Content-length", params.length);
-    http.setRequestHeader("Connection", "close");
-    http.send(params);
-}
