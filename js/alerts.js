@@ -40,10 +40,11 @@ const messaging = firebase.messaging();
 // - a message is received while the app has focus
 // - the user clicks on an app notification created by a sevice worker
 //   `messaging.setBackgroundMessageHandler` handler.
+var playdd;
 messaging.onMessage(function(payload) {
   console.log("Message received. ", payload);
   console.log(payload.data.url);
-  // ...
+  playdd = payload;
 });
 console.log(messaging.getToken());
 window.addEventListener('load', function () {
