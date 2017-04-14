@@ -54,15 +54,11 @@ self.addEventListener('notificationclick', function (event) {
                         return client.focus();
                 }
                 if (clients.openWindow) {
-                    if (event.action === 'settings') {
-                        return clients.openWindow('https://alerts.thedailystar.net/?settings=1');                        
-                    } else {
                         var msg_id = event.notification.data.msg_id;
                         var user_id = event.notification.data.user_id;
-                        var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
-                        updateStatus('opened', params);
-                        return clients.openWindow(event.notification.data.url);    
-                    }
+                        //var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
+                        //updateStatus('opened', params);
+                        return clients.openWindow(event.notification.data.url);  
                 }
             })
             );
