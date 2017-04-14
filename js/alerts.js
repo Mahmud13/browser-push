@@ -42,7 +42,7 @@ const messaging = firebase.messaging();
 //   `messaging.setBackgroundMessageHandler` handler.
 messaging.onMessage(function(payload) {
   console.log("Message received. ", payload);
-  console.log(playload.data.url);
+  console.log(payload.data.url);
   // ...
 });
 console.log(messaging.getToken());
