@@ -30,8 +30,8 @@ messaging.setBackgroundMessageHandler(function(payload) {
             user_id: user_id
         }
     };
-    var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
-    updateStatus('received', params);
+   // var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
+   // updateStatus('received', params);
 
   return self.registration.showNotification(notificationTitle,
       notificationOptions);
