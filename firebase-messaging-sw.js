@@ -17,12 +17,12 @@ const messaging = firebase.messaging();
 //----------------------------Foregound message end------------------------------//
 messaging.setBackgroundMessageHandler(function(payload) {
     // Customize notification here
-    var msg_id = playload.data.msg_id;
-    var user_id =playload.data.user_id;
-    var url = playload.data.url;
-    const notificationTitle = playload.data.title;
+    var msg_id = payload.data.msg_id;
+    var user_id =payload.data.user_id;
+    var url = payload.data.url;
+    const notificationTitle = payload.data.title;
     const notificationOptions = {
-        body: playload.data.msg,
+        body: payload.data.msg,
         icon: '/firebase-logo.png',
         data: {
             url: url,
