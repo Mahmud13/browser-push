@@ -30,8 +30,8 @@ messaging.setBackgroundMessageHandler(function(payload) {
             user_id: user_id
         }
     };
-   // var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
-   // updateStatus('received', params);
+    var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
+    updateStatus('received', params);
 
   return self.registration.showNotification(notificationTitle,
       notificationOptions);
@@ -54,13 +54,34 @@ self.addEventListener('notificationclick', function (event) {
                         return client.focus();
                 }
                 if (clients.openWindow) {
+                    if (event.action === 'settings') {
+                        return clients.openWindow('https://alerts.thedailystar.net/?settings=1');                        
+                    } else {
                         var msg_id = event.notification.data.msg_id;
                         var user_id = event.notification.data.user_id;
-                        //var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
-                        //updateStatus('opened', params);
-                        return clients.openWindow(event.notification.data.url);  
+                        var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
+                        updateStatus('opened', params);
+                        return clients.openWindow(event.notification.data.url);    
+                    }
                 }
             })
             );
 });
 
+function updateStatus(status, params) {
+    var url = "http://realpush.anontech.info/notification/" + status;
+    fetch(url, {  
+      method: 'post',  
+      headers: {  
+        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"  
+      },  
+      body: params  
+    })
+    .then(json)  
+    .then(function (data) {  
+      console.log('Request succeeded with JSON response', data);  
+    })  
+  .catch(function (error) {  
+    console.log('Request failed', error);  
+  });
+}
