@@ -17,6 +17,7 @@ const messaging = firebase.messaging();
 //----------------------------Foregound message end------------------------------//
 messaging.setBackgroundMessageHandler(function(payload) {
   // Customize notification here
+  console.log(playload);
   const notificationTitle = 'Background Message Title';
   const notificationOptions = {
     body: 'Background Message body.',
