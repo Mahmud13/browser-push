@@ -15,11 +15,9 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 //----------------------------Foregound message end------------------------------//
-//----------------------------Foregound message end------------------------------//
 messaging.setBackgroundMessageHandler(function(payload) {
     // Customize notification here
     var msg_id = payload.data.msg_id;
-    var user_id =payload.data.user_id;
     var url = payload.data.url;
     var sound = payload.data.sound;
     var icon = payload.data.icon;
@@ -31,10 +29,9 @@ messaging.setBackgroundMessageHandler(function(payload) {
         data: {
             url: url,
             msg_id: msg_id,
-            user_id: user_id
         }
     };
-    var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=received";
+    var params = "msg_id="+msg_id+"&status=received&device_type=browser";
     updateStatus('received', params);
 
   return self.registration.showNotification(notificationTitle,
@@ -58,15 +55,10 @@ self.addEventListener('notificationclick', function (event) {
                         return client.focus();
                 }
                 if (clients.openWindow) {
-                    if (event.action === 'settings') {
-                        return clients.openWindow('https://alerts.thedailystar.net/?settings=1');                        
-                    } else {
-                        var msg_id = event.notification.data.msg_id;
-                        var user_id = event.notification.data.user_id;
-                        var params = "msg_id="+msg_id+"&user_id="+user_id+"&status=opened";
-                        updateStatus('opened', params);
-                        return clients.openWindow(event.notification.data.url);    
-                    }
+                    var msg_id = event.notification.data.msg_id;
+                    var params = "msg_id="+msg_id+"&status=opened&device_type=browser";
+                    updateStatus('opened', params);
+                    return clients.openWindow(event.notification.data.url);    
                 }
             })
             );
@@ -74,7 +66,7 @@ self.addEventListener('notificationclick', function (event) {
 
 
 function updateStatus(status, params) {
-    var url = "https://alerts.thedailystar.net/notification/" + status;
+    var url = "https://push.app/notification/" + status;
     fetch(url, {  
       method: 'post',  
       headers: {  
@@ -86,5 +78,7 @@ function updateStatus(status, params) {
         console.log('Request failed', error);  
     });
 }
+
+
 
 
