@@ -66,7 +66,7 @@ self.addEventListener('notificationclick', function (event) {
 
 
 function updateStatus(status, params) {
-    var url = "https://push.app/notification/" + status;
+    var url = "https://alerts.thedailystar.net/notification/" + status;
     fetch(url, {  
       method: 'post',  
       headers: {  
