@@ -76,7 +76,7 @@ function updateStatus(status, params) {
       body: params  
     })
     .then(function(res){
-      console.log(res);
+      console.log(res.json());
     })
     .catch(function (error) {  
         console.log('Request failed', error);  
