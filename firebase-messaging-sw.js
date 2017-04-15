@@ -57,6 +57,7 @@ self.addEventListener('notificationclick', function (event) {
                 if (clients.openWindow) {
                     var msg_id = event.notification.data.msg_id;
                     var params = "msg_id="+msg_id+"&status=opened&device_type=browser";
+                    console.log(params);
                     updateStatus('opened', params);
                     return clients.openWindow(event.notification.data.url);    
                 }
@@ -73,6 +74,9 @@ function updateStatus(status, params) {
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"  
       },  
       body: params  
+    })
+    .then(function(res){
+      console.log(res);
     })
     .catch(function (error) {  
         console.log('Request failed', error);  
